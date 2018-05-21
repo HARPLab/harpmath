@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>harpmath</name>
+  <version>0.1.0</version>
+  <description>
+   Math utilities used by the Human and Robot Partners Lab.
+  </description>
+  <maintainer email="rmaronson@cmu.edu">Reuben Aronson</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>python</depend>
+  <depend>rospy</depend>
+  <depend>python-catkin-pkg</depend>
+  <depend>python-numpy</depend>
+  <depend>python-scipy</depend>
+  <!-- These optional dependencies cause unit tests can fail if missing. -->
+
+</package>
