@@ -19,14 +19,20 @@ def average_quaternion(quaternions, weights=None):
       M = \sum_i w_i q_i q_i^T
     as according to Markely et al., "Quaternion averaging." NASA Tech. Rep. https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20070017872.pdf
     """
+    
     quaternions = np.array(quaternions)
+    # short circuit if only one quat
+    if quaternions.ndim == 1:
+        assert quaternions.shape[0] == 4
+        return quaternions
+    
     assert quaternions.shape[1] == 4
     assert weights is None or quaternions.shape[0] == weights.shape[0]
     
     if weights is None:
         M = np.einsum('ij,ik->jk', quaternions, quaternions)
     else:
-        M = np.sum(np.einsum('ij,ik,w->jkw', quaternions, quaternions, weights), axis=2)
+        M = np.einsum('ij,ik,i->jk', quaternions, quaternions, weights)
     
     # M is guaranteed to by symmetric by construction
     _, v = scipy.linalg.eigh(M)
@@ -34,7 +40,7 @@ def average_quaternion(quaternions, weights=None):
     if np.isclose(qnorm, 0.):
         # average is undefined, e.g. you tried to average q and p where <q,p> = 0
         return None
-    qf = v[:,-3] / qnorm
+    qf = v[:,-1] / qnorm
     
     # Check the sign
     q_approx = np.sum(quaternions, axis=0)
