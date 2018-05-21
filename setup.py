@@ -5,8 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 d = generate_distutils_setup(
     packages=[
         'harpmath',
-        'harpmath.tf',
-        'harpmath.tests'
+        'harpmath.tf'
     ],
     package_dir={'': 'src'},
 )

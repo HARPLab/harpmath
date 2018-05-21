@@ -14,7 +14,7 @@ class RotationTest(unittest.TestCase):
         qn_c = rotations.average_quaternion(q)
         print(qn)
         print(qn_c)
-        self.assertTrue(np.allclose(qn_c, qn, rtol=2e-2))
+        self.assertTrue(np.allclose(qn_c, qn, rtol=5e-2))
 
 if __name__ == "__main__":
     unittest.main()
