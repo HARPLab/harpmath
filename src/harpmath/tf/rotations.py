@@ -2,6 +2,7 @@
 
 import numpy as np
 import scipy.linalg
+import transformations
 
 def average_quaternion(quaternions, weights=None):
     """
@@ -52,7 +53,20 @@ def average_quaternion(quaternions, weights=None):
     
     return qf
     
+
+def quaternion_covariance(quaternions, weights=None, avg=None):
+    """
+    Compute the covariance of the given quaternion set around each of the axes x, y, z
+    """
+    if avg is None:
+        avg = average_quaternion(quaternions, weights)
+    avg_inv = transformations.quaternion_inverse(avg)
     
-    
+    # Compute the Euler angle representation of each quaternion offset
+    euler = []
+    for q in quaternions:
+        q_diff = transformations.quaternion_multiply(q, avg_inv)
+        euler.append(transformations.euler_from_quaternion(q_diff))
+    return np.std(euler, axis=0)
     
     
