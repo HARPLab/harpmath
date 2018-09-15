@@ -68,5 +68,20 @@ def quaternion_covariance(quaternions, weights=None, avg=None):
         q_diff = transformations.quaternion_multiply(q, avg_inv)
         euler.append(transformations.euler_from_quaternion(q_diff))
     return np.std(euler, axis=0)
+
+def quaternion_covariance_1d(quaternions, weights=None, avg=None):
+    """
+    Transform the 1-d standard deviation of the quaternions as
+    \sigma = mean[ cos^{-1} (q_i \cdot \bar{q}) ]
+    where
+    \bar{q} = average_quaternion(quaternions)
+    """
+    if avg is None:
+        avg = average_quaternion(quaternions, weights)
+        
+    ang = 2*np.arccos(np.dot(quaternions, avg))
+    if weights is not None:
+        ang = ang * weights
+    return np.sqrt(np.sum(np.square(ang)) / (ang.size - 1))
     
     
